@@ -1,0 +1,178 @@
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{ae,aecompl}
+
+% allow metapost figures to be included inline
+% note: you must invoke latex using:
+%   pdflatex -shell-escape <inputfile>
+% to allow it to invoke external commands. See the very end of the
+% document as well.
+\usepackage{emp,ifpdf}
+\usepackage{graphicx}
+
+% convert metapost figures to .eps or .pdf automatically when
+% including them
+\ifpdf\DeclareGraphicsRule{*}{mps}{*}{}\fi
+
+% include the metapost macros
+\empprelude{input boxes; input theory}
+
+% skip for paragraphs, don't indent
+\addtolength{\parskip}{0.5\baselineskip}
+\parindent=0pt
+
+\begin{document}
+% create a metapost file for figures to be dumped to.  It's easiest
+% to use a single file for all the figures in the document
+\begin{empfile}
+
+\begin{center}
+\textbf{\LARGE Finite Automata using Metapost Macros} \\
+Russ Ross
+\end{center}
+
+\section{Simple Example}
+
+Here is a DFA that accepts strings over $\Sigma=\{a,b\}$ with an even number of $a$'a and an even number of $b$'s. Using ``curve'' curves the edge slightly to the left:
+
+\begin{center}
+% Start a new figure. The (0,0) indicates the size of the figure.
+% Those dimensions are available as the variables w and h in
+% metapost so you can make scalable figures. I usually just ignore
+% them.
+\begin{emp}(0,0)
+  % it's good practice to pick a basic size unit and make all your
+  % distances relative to that unit
+  u := 2cm;
+  node.q0(); q0.c = origin;
+  node.q1(); q1.c = q0.c shifted (u,0);
+  node.q2(); q2.c = q0.c shifted (0,-u);
+  node.q3(); q3.c = q0.c shifted (u,-u);
+  makestart(q0); makefinal(q3);
+  drawboxed(q0,q1,q2,q3);
+
+  edge(q0,q1,25,A);
+  edge(q1,q0,curve,A);
+  edge(q2,q3,curve,A);
+  edge(q3,q2,curve,A);
+  edge(q0,q2,curve,B);
+  edge(q2,q0,curve,B);
+  edge(q1,q3,curve,B);
+  edge(q3,q1,curve,B);
+\end{emp}
+\end{center}
+
+\section{Curved Edges}
+
+This DFA was constructed from an NFA using the subset construction. It has straight edges, edges with custom curves, and loops. For curved edges, the number indicates the angle of the curve in degrees. More specifically, it gives the number of degrees of the point on the circle where the edge should emerge from the node. An edge with angle zero would\footnote{This doesn't actually work, because it can't figure out where to put the label. For a straight edge, use ``left'' and ``right'' to tell it which side to put the label on.} emerge directly toward the target node; anything else is added or subtracted from that angle.
+
+\begin{center}
+\begin{emp}(0,0)
+  % Pick a size of nodes other than the default (bignodes). This
+  % also resets the edge color, solid/dashed, etc.
+  mediumnodes;
+  u := 1cm;
+  node.a("0"); a.c = (0,0);
+  node.b("1"); b.c = (u,0);
+  node.c("2"); c.c = (2u,0);
+  node.d("03"); d.c = (3u,0);
+  node.e("01"); e.c = (4u,0);
+  node.f("12"); f.c = (5u,0);
+  node.g("02"); g.c = (6u,0);
+  node.h(btex $\emptyset$ etex); h.c = (0,-u);
+  makestart(a); makefinal(a,d,e,g);
+
+  edge(a,b,right,A);
+  edge(b,c,right,A);
+  edge(c,d,right,B);
+  edge(d,e,right,A);
+  edge(e,f,right,A);
+  edge(f,g,right,A);
+  edge(a,h,right,B);
+  edge(c,a,-45,A);
+  edge(g,e,-45,A);
+  edge(g,d,-60,B);
+  edge(f,d,60,B);
+
+  loop(h,down,A);
+  loop(h,left,B);
+
+  drawboxed(a,b,c,d,e,f,g,h);
+\end{emp}
+\end{center}
+
+\section{Colored Edges}
+
+This NFA has red edges when there are multiple transitions for a single input letter. When using straight edges, put ``left'' or ``right'' to indicate where the label should go:
+
+\begin{center}
+\begin{emp}(0,0)
+  smallnodes;
+  node.a(); a.c = (0,0);
+  makestart(a); makefinal(a);
+
+  node.b(); b.c = (1.5cm,1cm);
+  node.c(); c.c = (2cm,0);
+  node.d(); d.c = (1.5cm,-1cm);
+  rededges;
+  edge(a,b,left,A);
+  blackedges;
+  edge(b,c,left,A);
+  edge(c,d,left,B);
+  edge(d,a,left,A);
+
+  node.e(); e.c = (-1cm,1cm);
+  node.f(); f.c = (0cm, sqrt(2)*1cm);
+  rededges;
+  edge(a,e,left,A);
+  blackedges;
+  edge(e,f,left,A);
+  edge(f,a,left,B);
+
+  node.g(); g.c = (-1cm,-1cm);
+  node.h(); h.c = (0cm, -sqrt(2)*1cm);
+  rededges;
+  edge(a,h,left,A);
+  blackedges;
+  edge(h,g,left,A);
+  edge(g,a,left,A);
+
+  drawboxed(a,b,c,d,e,f,g,h);
+\end{emp}
+\end{center}
+
+\section{Undirected Graphs}
+
+You can do undirected edges and dashed edges as well. Note that using the label ``BLANK'' skips the label on an edge. The same works for a node, but you can also just leave the label argument blank.  For straight, unlabeled edges, You can also use ``sedge'', which draws a simple, straight edge with no label.
+
+\begin{center}
+\begin{emp}(0,0)
+  mediumnodes;
+  picture x;
+  u := 1cm;
+  undirectededges;
+  node.x(X); x.c=(0,0);
+  node.a(A); a.c=up scaled u;
+  node.b(B); b.c=up rotated 120 scaled u;
+  node.c(C); c.c=up rotated -120 scaled u;
+  drawboxed(x,a,b,c);
+  sedge(x,a);
+  sedge(x,b);
+  sedge(x,c);
+  dashededges;
+  sedge(a,b);
+  sedge(b,c);
+  sedge(a,c);
+  solidedges; directededges;
+\end{emp}
+\end{center}
+
+\end{empfile}
+% this invokes metapost on the figures. You must run latex a second
+% time for the figures to be included.
+\immediate\write18{mpost -tex=latex \jobname}
+\end{document}

@@ -1,0 +1,23 @@
+Theory macros for Metapost:
+===========================
+
+I wrote these macros to make it easier to create diagrams of finite
+automata (DFAs and NFAs), pushdown automata (PDAs), Turing machines,
+etc.  I use LaTeX to prepare my slides and problem sets, and I
+require my students to use LaTeX in writing up their solutions.
+
+To get started, look at figure-examples.tex, which contains a few
+basic examples.  For those conversent with LaTeX and Metapost, the
+macros are based around the Metapost boxes package.  Simple wrappers
+make it easier to create nodes with consistent sizing and to mark
+start and accept nodes.
+
+The edge command makes it easy to draw straight and curved edges
+between nodes.  It also places labels intelligently, halfway between
+the end nodes and adjusted so that larger labels do not overlap the
+edge.
+
+The example .tex file also shows how to use the emp LaTeX package,
+which makes it convenient to write your figures inline with the rest
+of the LaTeX code.  Between the example file and the comments in the
+macros, the documentation is not great, but generally sufficient.
