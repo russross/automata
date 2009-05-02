@@ -170,23 +170,6 @@ enddef;
 % the label is placed at p, pushed along
 % the direction vector far enough that the bbox
 % just touches p
-def put_label_old(expr p, direction)(text lab) =
-    begingroup;
-    save pic,gap;
-    picture pic;
-
-    if string lab: pic := lab infont defaultfont scaled defaultscale;
-                   pic := pic shifted -center(pic)
-    elseif picture lab: pic := lab shifted -center(lab)
-    else: pic := nullpicture fi;
-
-    pair gap;
-    gap = ((0,0)--(-(unitvector direction) scaled 1cm))
-        intersectionpoint bbox pic;
-    draw pic shifted (p + unitvector direction scaled length(gap));
-    endgroup
-enddef;
-
 def put_label(expr anchorpath, anchorpoint, movedir)(text lab) =
     begingroup;
     save pic, nudgedir, shiftedpath;
