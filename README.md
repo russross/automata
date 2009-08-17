@@ -19,7 +19,7 @@ edge.
 
 
 Inline figures
-==============
+--------------
 
 The example `.tex` file also shows how to use the emp LaTeX package,
 which makes it convenient to write your figures inline with the rest
@@ -102,7 +102,7 @@ actually includes the rendered figures.
 
 
 Tutorial
-========
+--------
 
 Inside each figure, I usually define a size unit and specify all
 spacing in terms of that unit:
