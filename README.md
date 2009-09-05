@@ -21,9 +21,9 @@ edge.
 Inline figures
 --------------
 
-The example `.tex` file also shows how to use the emp LaTeX package,
-which makes it convenient to write your figures inline with the rest
-of the LaTeX code.
+The example `.tex` file also shows how to use the `emp` LaTeX
+package, which makes it convenient to write your figures inline with
+the rest of the LaTeX code.
 
 In the prelude of your LaTeX document, include a few packages:
 
@@ -60,14 +60,14 @@ Each time you want to create a figure, do so in an `emp` environment:
 I usually center my figures by nesting them in a `center` environment.
 
 Where I've put `(0,0)`, you can specify the size of the figure.  All
-it does is define variables _w_ and _h_ with the width and height,
+it does is define variables *w* and *h* with the width and height,
 respectively.  You can use those in your figure definition to make a
 scalable figure.  I don't usually bother, so I just declare each one
 with `(0,0)`.
 
 One caveat: the `emp` environment uses `verbatim`, which makes this
-fail in some circumstances.  Notably, if you use the beamer package
-for preparing slides, you will need to start the frame with:
+fail in some circumstances.  Notably, if you use the `beamer`
+package for preparing slides, you will need to start the frame with:
 
         \begin{frame}[containsverbatim]{Title of slide}
 
@@ -112,7 +112,10 @@ spacing in terms of that unit:
 Then I can tweak the size easily.  This does not scale the size of
 nodes, tape squares, or labels, but it is helpful even so.
 
-To create a DFA node, use the node macro:
+
+### Nodes
+
+To create a DFA node, use the `node` macro:
 
         node.q0("label");
 
@@ -173,6 +176,9 @@ And if you only want labels but no boxes, use:
 This is occasionally useful if you want to use different colors, for
 example.
 
+
+### Start and final nodes
+
 Final nodes are displayed with a smaller circle inside the main
 node.  To mark nodes as final nodes, use:
 
@@ -188,6 +194,9 @@ This draws a `>` sign on the left of the node.  To put it on the top
 instead, use:
 
         makestart_top(q0,q1);
+
+
+### Edges
 
 Next are edges.  Edges can be defined in several ways.  A simple
 straight edge with no label from `q0` to `q1`:
@@ -234,11 +243,17 @@ the shape of the label.  It tends to give a good result even for
 long or tall labels.  It only worries about the edge, however; you
 must provide enough space to prevent overlap with nodes.
 
+
+### Loops
+
 Looped edges are a special case.  You must specify the node, the
 side of the node the loop should be attached to (`up`, `down`,
 `left`, or `right`), and the label:
 
         loop(q0,up,AB);
+
+
+### Node sizes
 
 A series of node sizes are predefined.  Declare the size you want
 before you start making nodes.  From smallest to largest:
@@ -254,6 +269,9 @@ Note that changes in one figure persist to the next if you use
 multiple figures in one file, so it is best to explicitly select a
 size in each figure.
 
+
+### Edge colors
+
 You can changes edge colors using:
 
         rededges;
@@ -262,6 +280,9 @@ You can changes edge colors using:
         blackedges;
 
 or you can assign a Metapost color to `edgecolor`.
+
+
+### Other options
 
 Similarly, you can turn dashed edges on and off using:
 
@@ -285,6 +306,9 @@ To reset such options, use the command with no options:
         drawoptions();
 
 These commands affect all drawing, not just nodes.
+
+
+### Tape squares
 
 To draw tapesquares, first declare that you are beginning a tape:
 
@@ -330,6 +354,9 @@ would with nodes.
 When you reach the end of the tape (either kind), mark it with:
 
         endtape;
+
+
+### Other helpful macros
 
 A simple macro is included for drawing normal Metapost arrows that
 are shortened a bit at both ends:
