@@ -8,7 +8,9 @@
 
 % allow metapost figures to be included inline
 % note: you must invoke latex using:
-%   pdflatex -shell-escape <inputfile>
+%
+%     pdflatex -shell-escape <inputfile>
+%
 % to allow it to invoke external commands. See the very end of the
 % document as well.
 \usepackage{emp,ifpdf}
@@ -26,6 +28,7 @@
 \parindent=0pt
 
 \begin{document}
+
 % create a metapost file for figures to be dumped to.  It's easiest
 % to use a single file for all the figures in the document
 \begin{empfile}
@@ -37,28 +40,49 @@ Russ Ross
 
 \section{Simple Example}
 
-Here is a DFA that accepts strings over $\Sigma=\{a,b\}$ with an even number of $a$'a and an even number of $b$'s. Using ``curve'' curves the edge slightly to the left:
+Here is a DFA that accepts strings over $\Sigma=\{a,b\}$ with an
+even number of $a$'a and an even number of $b$'s. Using ``curve''
+curves the edge slightly to the left:
 
+% center the figure
 \begin{center}
+
 % Start a new figure. The (0,0) indicates the size of the figure.
 % Those dimensions are available as the variables w and h in
 % metapost so you can make scalable figures. I usually just ignore
-% them.
+% them, hence (0,0).
 \begin{emp}(0,0)
   % it's good practice to pick a basic size unit and make all your
   % distances relative to that unit
   u := 2cm;
+
+  % create a node, and position its center at the origin
   node.q0(); q0.c = origin;
-  node.q1(); q1.c = q0.c shifted (u,0);
-  node.q2(); q2.c = q0.c shifted (0,-u);
-  node.q3(); q3.c = q0.c shifted (u,-u);
-  makestart(q0); makefinal(q3);
+
+  % create 3 more nodes, and position their respective centers
+  % relative to the center of the first node.
+  node.q1(); q1.c = q0.c + (u,0);
+  node.q2(); q2.c = q0.c + (0,-u);
+  node.q3(); q3.c = q0.c + (u,-u);
+
+  % mark q0 as a start node
+  makestart(q0);
+
+  % mark q3 as an accept node
+  makefinal(q3);
+
+  % draw the nodes
   drawboxed(q0,q1,q2,q3);
 
+  % an edge from q0 to q1, curved 25 degrees, with label $a$
   edge(q0,q1,25,A);
+
+  % additional edges with default curve and $a$ label
   edge(q1,q0,curve,A);
   edge(q2,q3,curve,A);
   edge(q3,q2,curve,A);
+
+  % additional edges with default curve and $b$ label
   edge(q0,q2,curve,B);
   edge(q2,q0,curve,B);
   edge(q1,q3,curve,B);
@@ -68,7 +92,16 @@ Here is a DFA that accepts strings over $\Sigma=\{a,b\}$ with an even number of 
 
 \section{Curved Edges}
 
-This DFA was constructed from an NFA using the subset construction. It has straight edges, edges with custom curves, and loops. For curved edges, the number indicates the angle of the curve in degrees. More specifically, it gives the number of degrees of the point on the circle where the edge should emerge from the node. An edge with angle zero would\footnote{This doesn't actually work, because it can't figure out where to put the label. For a straight edge, use ``left'' and ``right'' to tell it which side to put the label on.} emerge directly toward the target node; anything else is added or subtracted from that angle.
+This DFA was constructed from an NFA using the subset construction.
+It has straight edges, edges with custom curves, and loops. For
+curved edges, the number indicates the angle of the curve in
+degrees. More specifically, it gives the number of degrees of the
+point on the circle where the edge should emerge from the node. An
+edge with angle zero would emerge directly toward the target
+node\footnote{This doesn't actually work, because it can't figure
+out where to put the label. For a straight edge, use ``left'' and
+``right'' to tell it which side to put the label on.}; anything else
+is added or subtracted from that angle.
 
 \begin{center}
 \begin{emp}(0,0)
@@ -76,13 +109,19 @@ This DFA was constructed from an NFA using the subset construction. It has strai
   % also resets the edge color, solid/dashed, etc.
   mediumnodes;
   u := 1cm;
+
+  % create a node with a zero inside it, centered at the origin
   node.a("0"); a.c = (0,0);
+
+  % position additional nodes using absolute coordinates
   node.b("1"); b.c = (u,0);
   node.c("2"); c.c = (2u,0);
   node.d("03"); d.c = (3u,0);
   node.e("01"); e.c = (4u,0);
   node.f("12"); f.c = (5u,0);
   node.g("02"); g.c = (6u,0);
+
+  % labels can use LaTeX format with btex ... etex
   node.h(btex $\emptyset$ etex); h.c = (0,-u);
   makestart(a); makefinal(a,d,e,g);
 
@@ -93,6 +132,8 @@ This DFA was constructed from an NFA using the subset construction. It has strai
   edge(e,f,right,A);
   edge(f,g,right,A);
   edge(a,h,right,B);
+
+  % negative angles emerge curved to the left instead of right
   edge(c,a,-45,A);
   edge(g,e,-45,A);
   edge(g,d,-60,B);
@@ -107,7 +148,9 @@ This DFA was constructed from an NFA using the subset construction. It has strai
 
 \section{Colored Edges}
 
-This NFA has red edges when there are multiple transitions for a single input letter. When using straight edges, put ``left'' or ``right'' to indicate where the label should go:
+This NFA has red edges when there are multiple transitions for a
+single input letter. When using straight edges, put ``left'' or
+``right'' to indicate where the label should go:
 
 \begin{center}
 \begin{emp}(0,0)
@@ -115,17 +158,26 @@ This NFA has red edges when there are multiple transitions for a single input le
   node.a(); a.c = (0,0);
   makestart(a); makefinal(a);
 
+  % this time we didn't define a scaling unit, so we use standard
+  % units instead
   node.b(); b.c = (1.5cm,1cm);
   node.c(); c.c = (2cm,0);
   node.d(); d.c = (1.5cm,-1cm);
+
+  % switch to drawing red edges
   rededges;
   edge(a,b,left,A);
+
+  % back to black edges
   blackedges;
   edge(b,c,left,A);
   edge(c,d,left,B);
   edge(d,a,left,A);
 
   node.e(); e.c = (-1cm,1cm);
+
+  % metapost is capable of quite a bit of math, so you can compute
+  % positions instead of specifying literal coordinates
   node.f(); f.c = (0cm, sqrt(2)*1cm);
   rededges;
   edge(a,e,left,A);
@@ -147,19 +199,31 @@ This NFA has red edges when there are multiple transitions for a single input le
 
 \section{Undirected Graphs}
 
-You can do undirected edges and dashed edges as well. Note that using the label ``BLANK'' skips the label on an edge. The same works for a node, but you can also just leave the label argument blank.  For straight, unlabeled edges, You can also use ``sedge'', which draws a simple, straight edge with no label.
+You can do undirected edges and dashed edges as well. Note that
+using the label ``BLANK'' skips the label on an edge. The same works
+for a node, but you can also just leave the label argument blank.
+For straight, unlabeled edges, You can also use ``sedge'', which
+draws a simple, straight edge with no label.
 
 \begin{center}
 \begin{emp}(0,0)
   mediumnodes;
   picture x;
   u := 1cm;
+
+  % turn off arrow heads on the edges
   undirectededges;
   node.x(X); x.c=(0,0);
+
+  % up is a unit vector, scaling it gives it the desired length
   node.a(A); a.c=up scaled u;
+
+  % here we scale and rotate a vector to specify the position
   node.b(B); b.c=up rotated 120 scaled u;
   node.c(C); c.c=up rotated -120 scaled u;
   drawboxed(x,a,b,c);
+
+  % straight edges can use this shortcut
   sedge(x,a);
   sedge(x,b);
   sedge(x,c);
@@ -172,7 +236,9 @@ You can do undirected edges and dashed edges as well. Note that using the label 
 \end{center}
 
 \end{empfile}
+
 % this invokes metapost on the figures. You must run latex a second
 % time for the figures to be included.
 \immediate\write18{mpost -tex=latex \jobname}
+
 \end{document}
