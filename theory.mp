@@ -1,6 +1,6 @@
 %% Macros for Computational Theory diagrams
 %% by Russ Ross
-%% Last revised December 2008
+%% Last revised January 2010
 
 verbatimtex
 \documentclass [10pt]{article}
@@ -322,16 +322,24 @@ vardef tapesquare@#(text in) =
     endgroup)
 enddef;
 
+% add an open-ended square with CDOTS to the right of given square
 def tapecontinueright(text in) =
   draw in.ne -- in.ne + (in.ne - in.nw);
   draw in.se -- in.se + (in.se - in.sw);
   label.rt(CDOTS, in.e)
 enddef;
 
+% add an open-ended square with CDOTS to the left of given square
 def tapecontinueleft(text in) =
   draw in.nw -- in.nw - (in.ne - in.nw);
   draw in.sw -- in.sw - (in.se - in.sw);
   label.lft(CDOTS, in.w)
+enddef;
+
+% draw a line across the bottom of the given square, extending out
+% beyond the edges to mark the bottom of a stack
+def stackbottom(text in) =
+  draw in.sw - 0.5(in.s - in.sw) -- in.se + 0.5(in.se - in.s)
 enddef;
 
 % draw a box with the given left, right, top, and bottom positions

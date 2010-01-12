@@ -339,17 +339,21 @@ your largest label (before creating any tape squares):
 
 If you want an open ended square at the end of the tape, use:
 
-    tapecontinueright(CDOTS);
+    tapecontinueright(rightmostsquare);
 
 or at the left end of the tape:
 
-    tapecontinueleft(CDOTS);
+    tapecontinueleft(leftmostsquare);
 
-Note that these do not actually create tape nodes.  The label and
-lines are rendered immediately, so the tape must be positioned
-already.  For the rest of the tape squares, you must use
-`drawboxed()` and its kin to display the tape squares, just as you
-would with nodes.
+To mark the bottom of a stack with lines sticking out, use:
+
+    stackbottom(bottomsquare);
+
+Note that these do not actually create tape nodes, but rather
+decorate existing nodes.  The label and lines are rendered
+immediately, so the tape square must be positioned already.  For the
+actual tape squares, you must use `drawboxed()` and its kin to
+display the tape squares, just as you would with nodes.
 
 When you reach the end of the tape (either kind), mark it with:
 
