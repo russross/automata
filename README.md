@@ -120,8 +120,7 @@ To create a DFA node, use the `node` macro:
     node.q0("label");
 
 This creates a node with the internal name `q0`, and displays the
-given label inside it when rendered.  Note that the label can be
-omitted.
+given label inside it when rendered.  The label can be omitted.
 
 The label can be a simple string, or you can render something using
 LaTeX:
@@ -184,9 +183,9 @@ node.  To mark nodes as final nodes, use:
 
     makefinal(q0,q1);
 
-Note that this draws the line immediately, so you cannot use it
-until the node's position has been established.  Similarly, you can
-mark nodes as start nodes:
+This draws the line immediately, so you cannot use it until the
+node's position has been established.  Similarly, you can mark nodes
+as start nodes:
 
     makestart(q0,q1);
 
@@ -256,7 +255,7 @@ side of the node the loop should be attached to (`up`, `down`,
 ### Node sizes
 
 A series of node sizes are predefined.  Declare the size you want
-before you start making nodes.  From smallest to largest:
+before you start making nodes.  From largest to smallest:
 
     hugenodes;
     bignodes;
@@ -272,7 +271,7 @@ size in each figure.
 
 ### Edge colors
 
-You can changes edge colors using:
+You can change edge colors using:
 
     rededges;
     blueedges;
@@ -337,7 +336,7 @@ your largest label (before creating any tape squares):
 
     BIGGEST := AB;
 
-If you want an open ended square at the end of the tape, use:
+If you want an open-ended square at the end of the tape, use:
 
     tapecontinueright(rightmostsquare);
 
