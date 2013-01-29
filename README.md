@@ -135,7 +135,7 @@ have been written:
 
 Here is the complete list of pre-defined labels:
 
-    A, B, AB, C, E, K, N, X, Y, Z, ZERO, ONE, ZEROONE,
+    A, B, AB, C, E, K, N, X, Y, Z, ZERO, ONE, ZEROONE, EMPTYSET,
     CDOTS, VDOTS, SQCUP, BLANK
 
 If you are unsure about what any of them are, look at `theory.mp`
