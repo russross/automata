@@ -1,6 +1,6 @@
 %% Macros for Computational Theory diagrams
 %% by Russ Ross
-%% Last revised January 2010
+%% Last revised September 2015
 
 verbatimtex
 \documentclass [10pt]{article}
@@ -109,7 +109,7 @@ def undirectededges = edgedirected := 0 enddef;
 
 % set up some handy labels
 picture A, B, AB, C, E, K, N, X, Y, Z,
-        ZERO, ONE, ZEROONE, EMPTYSET, CDOTS, VDOTS, SQCUP, BLANK, BIGGEST;
+        ZERO, ONE, ZEROONE, SIGMA, EMPTYSET, CDOTS, VDOTS, SQCUP, BLANK, BIGGEST;
 A = btex $a$ etex;
 B = btex $b$ etex;
 AB = btex $a,b$ etex;
@@ -123,6 +123,7 @@ Z = btex $z$ etex;
 ZERO = btex $0$ etex;
 ONE = btex $1$ etex;
 ZEROONE = btex $0,1$ etex;
+SIGMA = btex $\Sigma$ etex;
 EMPTYSET = btex $\emptyset$ etex;
 CDOTS = btex $\cdots$ etex;
 VDOTS = btex $\vdots$ etex;
