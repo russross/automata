@@ -1,19 +1,21 @@
-Theory macros for Metapost
-==========================
+Automata diagrams for LaTeX
+===========================
 
 I wrote these macros to make it easier to create diagrams of finite
 automata (DFAs and NFAs), pushdown automata (PDAs), Turing machines,
-etc.  I use LaTeX to prepare my slides and problem sets, and I
+etc. I use LaTeX to prepare my slides and problem sets, and I
 require my students to use LaTeX in writing up their solutions.
+This package makes it simple to create figures using Metapost that
+can easily be included in LaTeX documents of all types.
 
 To get started, look at `figure-examples.tex`, which contains a few
-basic examples.  For those conversent with LaTeX and Metapost, the
-macros are based around the Metapost `boxes` package.  Simple
+basic examples. For those conversent with LaTeX and Metapost, the
+macros are based around the Metapost `boxes` package. Simple
 wrappers make it easier to create nodes with consistent sizing and
 to mark start and accept nodes.
 
 The edge command makes it easy to draw straight and curved edges
-between nodes.  It also places labels intelligently, halfway between
+between nodes. It also places labels intelligently, halfway between
 the end nodes and adjusted so that larger labels do not overlap the
 edge.
 
@@ -59,23 +61,23 @@ Each time you want to create a figure, do so in an `emp` environment:
 
 I usually center my figures by nesting them in a `center` environment.
 
-Where I've put `(0,0)`, you can specify the size of the figure.  All
+Where I've put `(0,0)`, you can specify the size of the figure. All
 it does is define variables *w* and *h* with the width and height,
-respectively.  You can use those in your figure definition to make a
-scalable figure.  I don't usually bother, so I just declare each one
+respectively. You can use those in your figure definition to make a
+scalable figure. I don't usually bother, so I just declare each one
 with `(0,0)`.
 
 One caveat: the `emp` environment uses `verbatim`, which makes this
-fail in some circumstances.  Notably, if you use the `beamer`
+fail in some circumstances. Notably, if you use the `beamer`
 package for preparing slides, you will need to start the frame with:
 
     \begin{frame}[containsverbatim]{Title of slide}
 
 or it will fail with mysterious error messages.
 
-You can also define a named figure and include it later.  Only the
+You can also define a named figure and include it later. Only the
 definition uses a `verbatim` environment, so you can include the
-figure itself anywhere, including as a parameter to a macro.  To do
+figure itself anywhere, including as a parameter to a macro. To do
 so, define the figure in an `empdef` environment:
 
     \begin{empdef}[figurename](0,0)
@@ -88,7 +90,7 @@ Then when you want to include it, use:
 
 One more hint: when including small figures inline with text, it is
 often nice to be able to shift it up or down a bit to line it up
-with the text.  To do that, create a named figure, then use
+with the text. To do that, create a named figure, then use
 something like: `\raisebox{.25em}{\empuse{figurename}}`
 
 When compiling the LaTeX file, you must instruct it to permit
@@ -96,7 +98,7 @@ external programs to be run:
 
     pdflatex -shell-escape myfile.tex
 
-You also need to run the command twice.  The first time dumps the
+You also need to run the command twice. The first time dumps the
 figures into a file and runs Metapost on it, the second time
 actually includes the rendered figures.
 
@@ -109,7 +111,7 @@ spacing in terms of that unit:
 
     u := 1cm;
 
-Then I can tweak the size easily.  This does not scale the size of
+Then I can tweak the size easily. This does not scale the size of
 nodes, tape squares, or labels, but it is helpful even so.
 
 
@@ -120,7 +122,7 @@ To create a DFA node, use the `node` macro:
     node.q0("label");
 
 This creates a node with the internal name `q0`, and displays the
-given label inside it when rendered.  The label can be omitted.
+given label inside it when rendered. The label can be omitted.
 
 The label can be a simple string, or you can render something using
 LaTeX:
@@ -128,7 +130,7 @@ LaTeX:
     node.q0(btex $a$ etex);
 
 I have defined a bunch of common labels already, which can be used
-as node labels, edge labels, or anywhere else.  This example could
+as node labels, edge labels, or anywhere else. This example could
 have been written:
 
     node.q0(A);
@@ -141,9 +143,9 @@ Here is the complete list of pre-defined labels:
 If you are unsure about what any of them are, look at `theory.mp`
 for the definitions or try them out.
 
-Nodes use the Metapost `boxes` package.  It provides anchor points
+Nodes use the Metapost `boxes` package. It provides anchor points
 at the center, north, south, each, and west points on the node,
-accessible as `q0.c`, `q0.n`, `q0.e`, etc.  You must specify one
+accessible as `q0.c`, `q0.n`, `q0.e`, etc. You must specify one
 such point for each node, and the rest will be computed
 automatically:
 
@@ -155,15 +157,15 @@ can place them relative to each other:
     node.q1();
     q1.c = q0.c + (2u,0);
 
-Up to this point, nothing will actually be displayed.  The basic
+Up to this point, nothing will actually be displayed. The basic
 rule is that Metapost must be able to compute absolute positions for
-each object before it can be rendered.  When you have given it
+each object before it can be rendered. When you have given it
 enough information to do so, you can draw one or more nodes using
 the `drawboxed` command:
 
     drawboxed(q0,q1);
 
-This draws the nodes and their labels.  If you only want the nodes
+This draws the nodes and their labels. If you only want the nodes
 (without labels), use:
 
     drawboxes(q0,q1);
@@ -179,17 +181,17 @@ example.
 ### Start and final nodes
 
 Final nodes are displayed with a smaller circle inside the main
-node.  To mark nodes as final nodes, use:
+node. To mark nodes as final nodes, use:
 
     makefinal(q0,q1);
 
 This draws the line immediately, so you cannot use it until the
-node's position has been established.  Similarly, you can mark nodes
+node's position has been established. Similarly, you can mark nodes
 as start nodes:
 
     makestart(q0,q1);
 
-This draws a `>` sign on the left of the node.  To put it on the top
+This draws a `>` sign on the left of the node. To put it on the top
 instead, use:
 
     makestart_top(q0,q1);
@@ -197,13 +199,13 @@ instead, use:
 
 ### Edges
 
-Next are edges.  Edges can be defined in several ways.  A simple
+Next are edges. Edges can be defined in several ways. A simple
 straight edge with no label from `q0` to `q1`:
 
     sedge(q0,q1);
 
 Edges are directed by default, but you can specify undirected edges
-as well.  The general form of edges is this:
+as well. The general form of edges is this:
 
     edge(from,to,angle,label);
 
@@ -215,7 +217,7 @@ When you specify an angle, you are instructing it to set the angle
 (relative to a straight edge) at the point the edge leaves the start
 node and arrives at the destination node.
 
-If you don't want a label, use `BLANK` as the label.  A few examples:
+If you don't want a label, use `BLANK` as the label. A few examples:
 
     % a straight, empty transition (labeled with \varepsilon) with
     % the label on the left side
@@ -233,19 +235,19 @@ If you don't want a label, use `BLANK` as the label.  A few examples:
 Edges are rendered immediately, so both end nodes must be
 positioned.
 
-The `edge` macro tries to place the label in a good place.  It starts
+The `edge` macro tries to place the label in a good place. It starts
 by placing it at the center of the edge on the outside of the curve
-(or on the side you specify for straight edges).  Then it starts
+(or on the side you specify for straight edges). Then it starts
 nudging it further out until the bounding box of the label no longer
-overlaps the edge.  The direction it nudges it is chosen based on
-the shape of the label.  It tends to give a good result even for
-long or tall labels.  It only worries about the edge, however; you
+overlaps the edge. The direction it nudges it is chosen based on
+the shape of the label. It tends to give a good result even for
+long or tall labels. It only worries about the edge, however; you
 must provide enough space to prevent overlap with nodes.
 
 
 ### Loops
 
-Looped edges are a special case.  You must specify the node, the
+Looped edges are a special case. You must specify the node, the
 side of the node the loop should be attached to (`up`, `down`,
 `left`, or `right`), and the label:
 
@@ -255,7 +257,7 @@ side of the node the loop should be attached to (`up`, `down`,
 ### Node sizes
 
 A series of node sizes are predefined.  Declare the size you want
-before you start making nodes.  From largest to smallest:
+before you start making nodes. From largest to smallest:
 
     hugenodes;
     bignodes;
@@ -324,13 +326,13 @@ In either case, create a series of squares as you would nodes:
     tapesquare.c(X);
 
 You must anchor a single point on any one of the squares; all of the
-rest will be positioned automatically.  In addition to the points
+rest will be positioned automatically. In addition to the points
 you can use with nodes, you can use `nw`, `ne`, `sw`, and `se` to
 specify the four corners of each square.
 
 The sizes of the squares are set according to the label `BIGGEST`,
-which defaults to be the same as `B`.  Each square will be big
-enough to accommodate the longest dimension of `BIGGEST`.  If you
+which defaults to be the same as `B`. Each square will be big
+enough to accommodate the longest dimension of `BIGGEST`. If you
 are using custom labels, you may need to reset `BIGGEST` to match
 your largest label (before creating any tape squares):
 
@@ -349,8 +351,8 @@ To mark the bottom of a stack with lines sticking out, use:
     stackbottom(bottomsquare);
 
 Note that these do not actually create tape nodes, but rather
-decorate existing nodes.  The label and lines are rendered
-immediately, so the tape square must be positioned already.  For the
+decorate existing nodes. The label and lines are rendered
+immediately, so the tape square must be positioned already. For the
 actual tape squares, you must use `drawboxed()` and its kin to
 display the tape squares, just as you would with nodes.
 
@@ -367,7 +369,7 @@ are shortened a bit at both ends:
     shortarrow(startpoint,endpoint,2pt);
 
 This would draw an arrow from the start point to the end, but
-shortened by 2 points.  Note that these are points, not nodes.
+shortened by 2 points. Note that these are points, not nodes.
 
 Finally, another convenience macro to draw a box by specifying the
 left, right, top, and bottom coordinates:
@@ -375,6 +377,6 @@ left, right, top, and bottom coordinates:
     drawbox(0,2u,5u,4u);
 
 For more information about Metapost in general, various references
-and tutorials are available online.  These macros are enough for
+and tutorials are available online. These macros are enough for
 most basic diagrams my students need to create, but Metapost is
 capable of a lot more.
