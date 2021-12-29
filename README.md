@@ -8,6 +8,9 @@ require my students to use LaTeX in writing up their solutions.
 This package makes it simple to create figures using Metapost that
 can easily be included in LaTeX documents of all types.
 
+See `regularlanguages.pdf` for an example of slides where all of the
+diagrams were made using this package.
+
 To get started, look at `figure-examples.tex`, which contains a few
 basic examples. For those conversent with LaTeX and Metapost, the
 macros are based around the Metapost `boxes` package. Simple
